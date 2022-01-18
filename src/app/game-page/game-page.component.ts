@@ -12,9 +12,10 @@ import { OptionCardComponent } from '../option-card/option-card.component';
 export class GamePageComponent implements OnInit {
   constructor(private gameController: GameControllerService) {}
 
-  items$!: Observable<RedditItem[]>;
+  items$: Observable<RedditItem[]> | undefined;
 
   ngOnInit(): void {
-    this.items$ = this.gameController.getPosts();
+    this.items$ = this.gameController.items;
+    this.gameController.getPosts();
   }
 }
