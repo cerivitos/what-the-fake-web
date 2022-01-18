@@ -7,7 +7,8 @@ import { RedditItem } from '../model/RedditItem';
   styleUrls: ['./option-card.component.css'],
 })
 export class OptionCardComponent implements OnInit {
-  @Input() item!: RedditItem;
+  @Input() title!: string;
+  @Input() imageUrl!: string;
 
   constructor() {}
 
