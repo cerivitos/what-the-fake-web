@@ -27,7 +27,7 @@ export default (req: VercelRequest, res: VercelResponse) => {
 
             posts.push({
               title: itemData.title,
-              imageUrl: imageUrl,
+              imageUrl: imageUrl ?? '',
               articleUrl: itemData?.url,
               isReal: getRealPosts ? true : false,
               redditLink: 'https://reddit.com' + item?.data?.permalink,
