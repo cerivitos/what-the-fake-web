@@ -4,4 +4,6 @@ export interface RedditItem {
   articleUrl: string;
   isReal: boolean;
   redditLink: string;
+  subredditId: string;
+  postId: string;
 }
