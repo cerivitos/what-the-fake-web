@@ -27,7 +27,11 @@ export default (req: VercelRequest, res: VercelResponse) => {
         items.forEach((item: any) => {
           const itemData = item.data;
 
-          if (itemData && !itemData?.stickied) {
+          if (
+            itemData &&
+            !itemData?.stickied &&
+            !itemData?.title.toLowerCase().includes('onion')
+          ) {
             const imageUrl =
               itemData?.preview?.images?.[0]?.source?.url.replace(/amp;/g, '');
 
