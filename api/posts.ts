@@ -4,13 +4,19 @@ import { AxiosError, AxiosResponse } from 'axios';
 
 export default (req: VercelRequest, res: VercelResponse) => {
   const getRealPosts = req.query.real === 'true' ? true : false;
+  const numberOfPosts = req.query.limit;
+
+  let limitQuery = '';
+  if (numberOfPosts) {
+    limitQuery = `?limit=${numberOfPosts}`;
+  }
 
   axios({
     method: 'get',
     timeout: 10000,
     url: getRealPosts
-      ? 'https://api.reddit.com/r/nottheonion'
-      : 'https://api.reddit.com/r/theonion',
+      ? `https://api.reddit.com/r/nottheonion${limitQuery}`
+      : `https://api.reddit.com/r/theonion${limitQuery}`,
   })
     .then((response: AxiosResponse) => {
       if (response.status === 200) {
@@ -29,8 +35,10 @@ export default (req: VercelRequest, res: VercelResponse) => {
               title: itemData.title,
               imageUrl: imageUrl ?? '',
               articleUrl: itemData?.url,
-              isReal: getRealPosts ? true : false,
+              isReal: getRealPosts,
               redditLink: 'https://reddit.com' + item?.data?.permalink,
+              subredditId: itemData?.subreddit_id,
+              postId: itemData?.id,
             });
           }
         });
