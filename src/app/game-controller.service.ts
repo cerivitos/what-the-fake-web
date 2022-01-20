@@ -11,7 +11,7 @@ import { shuffle } from 'src/util/shuffle';
 export class GameControllerService {
   constructor(private http: HttpClient) {}
 
-  private _ROUNDS: number = 10;
+  rounds: number = 10;
 
   private _items: Subject<RedditItem[]> = new Subject<RedditItem[]>();
   public readonly items: Observable<RedditItem[]> = this._items.asObservable();
@@ -29,11 +29,11 @@ export class GameControllerService {
   }
 
   /**
-   * Get 75 posts from r/theonion and 25 posts from r/nottheonion, and merge them together.
+   * Get posts from r/theonion and r/nottheonion, and merge them together.
    * Subsequently, randomly assign them in sets of 4 comprising 1 real post and 3 fake posts.
    */
   getAllPosts() {
-    forkJoin([this._getPosts(true, 25), this._getPosts(false, 75)])
+    forkJoin([this._getPosts(true, 100), this._getPosts(false, 100)])
       .pipe(timeout(10000))
       .subscribe(
         (posts) => {
@@ -48,7 +48,7 @@ export class GameControllerService {
     const realPosts = posts[0];
     const fakePosts = posts[1];
 
-    for (let i = 0; i < this._ROUNDS; i++) {
+    for (let i = 0; i < this.rounds; i++) {
       // Temp array to hold the 4 posts for this round (1 real post and 3 fake posts)
       let roundPosts: RedditItem[] = [];
 
@@ -68,5 +68,9 @@ export class GameControllerService {
     }
 
     return finalPosts;
+  }
+
+  setRounds(rounds: number) {
+    this.rounds = rounds;
   }
 }
