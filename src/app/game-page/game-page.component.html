@@ -2,6 +2,7 @@
   <ng-container *ngIf="items$ | async as items; else loading">
     <div *ngFor="let item of items">
       <app-option-card
+        class="capitalize"
         title="{{ item.title }}"
         imageUrl="{{ item.imageUrl }}"
       ></app-option-card>
