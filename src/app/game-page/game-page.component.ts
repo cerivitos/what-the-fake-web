@@ -16,6 +16,6 @@ export class GamePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.items$ = this.gameController.items;
-    this.gameController.getPosts();
+    this.gameController.getAllPosts();
   }
 }
