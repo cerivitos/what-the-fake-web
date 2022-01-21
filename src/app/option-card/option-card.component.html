@@ -1,11 +1,15 @@
 <div
-  class="rounded-md overflow-hidden bg-slate-700 flex justify-between align-middle h-48"
+  class="relative rounded-md overflow-hidden bg-slate-700 h-48 hover:ring-4 hover:ring-emerald-600/95 cursor-pointer transition-all duration-200 ease-in-out"
 >
-  <p class="text-xl p-4">{{ title }}</p>
   <img
     *ngIf="imageUrl.length > 0"
     [src]="imageUrl"
     alt="Image for news article with title: {{ title }}"
-    class="h-full object-cover w-1/5"
+    class="h-full object-cover w-full"
   />
+  <div
+    class="absolute bottom-0 flex items-end w-full h-52 bg-gradient-to-t from-zinc-900 hover:from-emerald-900/60 bg-blend-screen"
+  >
+    <p class="text-xl p-4 font-medium z-10">{{ title }}</p>
+  </div>
 </div>
