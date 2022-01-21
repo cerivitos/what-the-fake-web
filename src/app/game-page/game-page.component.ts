@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { GameControllerService } from '../game-controller.service';
+import { GetPostsService } from '../service/get-posts.service';
 import { RedditItem } from '../model/RedditItem';
-import { OptionCardComponent } from '../option-card/option-card.component';
 
 @Component({
   selector: 'app-game-page',
@@ -10,12 +9,12 @@ import { OptionCardComponent } from '../option-card/option-card.component';
   styleUrls: ['./game-page.component.css'],
 })
 export class GamePageComponent implements OnInit {
-  constructor(private gameController: GameControllerService) {}
+  constructor(private getPostsService: GetPostsService) {}
 
   items$: Observable<RedditItem[]> | undefined;
 
   ngOnInit(): void {
-    this.items$ = this.gameController.items;
-    this.gameController.getAllPosts();
+    this.items$ = this.getPostsService.items;
+    this.getPostsService.getAllPosts();
   }
 }

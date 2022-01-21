@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
-import { RedditItem } from './model/RedditItem';
+import { RedditItem } from '../model/RedditItem';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin, Observable, Subject } from 'rxjs';
 import { timeout } from 'rxjs/operators';
 import { shuffle } from 'src/util/shuffle';
+import { GameControllerService } from './game-controller.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class GameControllerService {
-  constructor(private http: HttpClient) {}
-
-  rounds: number = 10;
+export class GetPostsService {
+  constructor(
+    private http: HttpClient,
+    private gameControllerService: GameControllerService
+  ) {}
 
   private _items: Subject<RedditItem[]> = new Subject<RedditItem[]>();
   public readonly items: Observable<RedditItem[]> = this._items.asObservable();
@@ -48,7 +50,7 @@ export class GameControllerService {
     const realPosts = posts[0];
     const fakePosts = posts[1];
 
-    for (let i = 0; i < this.rounds; i++) {
+    for (let i = 0; i < this.gameControllerService.rounds; i++) {
       // Temp array to hold the 4 posts for this round (1 real post and 3 fake posts)
       let roundPosts: RedditItem[] = [];
 
@@ -68,9 +70,5 @@ export class GameControllerService {
     }
 
     return finalPosts;
-  }
-
-  setRounds(rounds: number) {
-    this.rounds = rounds;
   }
 }
