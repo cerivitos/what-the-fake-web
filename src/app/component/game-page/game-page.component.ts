@@ -16,10 +16,11 @@ export class GamePageComponent implements OnInit {
   items$: Observable<RedditItem[]> | undefined;
   score$: Observable<number> | undefined;
   round$: Observable<number> | undefined;
+  bonus$: Observable<number> | undefined;
 
   ngOnInit(): void {
     this.items$ = this.gameControllerService.itemsForRound$;
-
+    this.bonus$ = this.gameControllerService.bonus$;
     this.score$ = this.gameControllerService.score$;
     this.round$ = this.gameControllerService.round$;
   }

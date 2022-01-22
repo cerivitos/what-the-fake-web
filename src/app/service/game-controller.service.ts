@@ -14,6 +14,11 @@ export class GameControllerService {
     this.getPostsService.items$.subscribe((posts) => {
       this.items = posts;
       this._itemsForRound$.next(this._getItemsForRound());
+
+      const bonusCountdown = setInterval(() => {
+        this._bonus$.next(this._bonus$.getValue() - 100);
+        if (this._bonus$.getValue() === 0) clearInterval(bonusCountdown);
+      }, 1000);
     });
   }
 
