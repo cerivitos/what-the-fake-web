@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { __core_private_testing_placeholder__ } from '@angular/core/testing';
-import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
-import { filter, find, mergeMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { RedditItem } from '../model/RedditItem';
 import { GetPostsService } from './get-posts.service';
 
@@ -15,9 +14,9 @@ export class GameControllerService {
       this.items = posts;
       this._itemsForRound$.next(this._getItemsForRound());
 
-      const bonusCountdown = setInterval(() => {
-        this._bonus$.next(this._bonus$.getValue() - 100);
-        if (this._bonus$.getValue() === 0) clearInterval(bonusCountdown);
+      this.bonusCountdown = setInterval(() => {
+        this._bonus$.next(this._bonus$.getValue() - 10);
+        if (this._bonus$.getValue() === 0) clearInterval(this.bonusCountdown);
       }, 1000);
     });
   }
@@ -29,6 +28,8 @@ export class GameControllerService {
 
   private _bonus$: BehaviorSubject<number> = new BehaviorSubject<number>(3000);
   public readonly bonus$: Observable<number> = this._bonus$.asObservable();
+
+  bonusCountdown!: any;
 
   private _round$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
   public readonly round$: Observable<number> = this._round$.asObservable();
@@ -51,8 +52,14 @@ export class GameControllerService {
       this._score$.next(this._score$.getValue() + 1);
     }
 
-    this._round$.next(this._round$.getValue() + 1);
-    this._itemsForRound$.next(this._getItemsForRound());
+    if (this._round$.getValue() < this.totalRounds) {
+      this._round$.next(this._round$.getValue() + 1);
+      this._itemsForRound$.next(this._getItemsForRound());
+    } else {
+      this._itemsForRound$.next([]);
+      clearInterval(this.bonusCountdown);
+      this._score$.next(this._score$.getValue() + this._bonus$.getValue());
+    }
   }
 
   private _getItemsForRound(): RedditItem[] {
