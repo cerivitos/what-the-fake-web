@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { GameControllerService } from 'src/app/service/game-controller.service';
 
 @Component({
   selector: 'app-option-card',
@@ -8,8 +9,13 @@ import { Component, Input, OnInit } from '@angular/core';
 export class OptionCardComponent implements OnInit {
   @Input() title!: string;
   @Input() imageUrl!: string;
+  @Input() postId!: string;
 
-  constructor() {}
+  constructor(private gameControllerService: GameControllerService) {}
 
   ngOnInit(): void {}
+
+  submitAnswer(): void {
+    this.gameControllerService.checkAnswer(this.postId);
+  }
 }

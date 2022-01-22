@@ -1,25 +1,22 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
 import { RedditItem } from '../model/RedditItem';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin, Observable, Subject } from 'rxjs';
 import { timeout } from 'rxjs/operators';
 import { shuffle } from 'src/util/shuffle';
-import { GameControllerService } from './game-controller.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GetPostsService {
-  constructor(
-    private http: HttpClient,
-    private gameControllerService: GameControllerService
-  ) {}
+  constructor(private http: HttpClient) {}
 
-  private _items: Subject<RedditItem[]> = new Subject<RedditItem[]>();
-  public readonly items: Observable<RedditItem[]> = this._items.asObservable();
+  private _items$: Subject<RedditItem[]> = new Subject<RedditItem[]>();
+  public readonly items$: Observable<RedditItem[]> =
+    this._items$.asObservable();
 
-  private _error: Subject<string> = new Subject<string>();
-  public readonly error: Observable<string> = this._error.asObservable();
+  private _error$: Subject<string> = new Subject<string>();
+  public readonly error$: Observable<string> = this._error$.asObservable();
 
   private _getPosts(
     truePosts: boolean = false,
@@ -34,23 +31,26 @@ export class GetPostsService {
    * Get posts from r/theonion and r/nottheonion, and merge them together.
    * Subsequently, randomly assign them in sets of 4 comprising 1 real post and 3 fake posts.
    */
-  getAllPosts() {
+  getAllPosts(rounds: number = 10) {
     forkJoin([this._getPosts(true, 100), this._getPosts(false, 100)])
       .pipe(timeout(10000))
       .subscribe(
         (posts) => {
-          this._items.next(this._arrangePosts(posts));
+          this._items$.next(this._arrangePosts(posts, rounds));
         },
-        (error) => this._error.next(error)
+        (error$) => this._error$.next(error$)
       );
   }
 
-  private _arrangePosts(posts: [RedditItem[], RedditItem[]]): RedditItem[] {
+  private _arrangePosts(
+    posts: [RedditItem[], RedditItem[]],
+    rounds: number = 10
+  ): RedditItem[] {
     let finalPosts: RedditItem[] = [];
     const realPosts = posts[0];
     const fakePosts = posts[1];
 
-    for (let i = 0; i < this.gameControllerService.rounds; i++) {
+    for (let i = 0; i < rounds; i++) {
       // Temp array to hold the 4 posts for this round (1 real post and 3 fake posts)
       let roundPosts: RedditItem[] = [];
 
