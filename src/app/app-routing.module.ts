@@ -1,13 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { GamePageComponent } from './game-page/game-page.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { StartPageComponent } from './component/start-page/start-page.component';
+import { PageNotFoundComponent } from './component/page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: GamePageComponent,
+    component: StartPageComponent,
     pathMatch: 'full',
+  },
+  {
+    path: 'game',
+    loadChildren: () =>
+      import('./module/game/game.module').then((m) => m.GameModule),
   },
   {
     path: '**',

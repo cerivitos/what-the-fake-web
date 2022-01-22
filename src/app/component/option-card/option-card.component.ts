@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { RedditItem } from '../model/RedditItem';
 
 @Component({
   selector: 'app-option-card',

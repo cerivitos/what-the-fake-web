@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { GetPostsService } from '../service/get-posts.service';
-import { RedditItem } from '../model/RedditItem';
+import { GetPostsService } from '../../service/get-posts.service';
+import { RedditItem } from '../../model/RedditItem';
 
 @Component({
   selector: 'app-game-page',
