@@ -36,7 +36,7 @@ export default (req: VercelRequest, res: VercelResponse) => {
               itemData?.preview?.images?.[0]?.source?.url.replace(/amp;/g, '');
 
             posts.push({
-              title: itemData.title,
+              title: itemData.title.replace(/&amp;/g, '&'),
               imageUrl: imageUrl ?? '',
               articleUrl: itemData?.url,
               isReal: getRealPosts,
