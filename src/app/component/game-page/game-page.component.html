@@ -1,8 +1,8 @@
-<div class="flex flex-col gap-4 mb-4 items-center">
+<header class="flex flex-col gap-4 my-4 items-center">
   <span>Round: {{ round$ | async }}</span>
   <span>Score: {{ score$ | async }}</span>
   <span>Bonus: {{ bonus$ | async }}</span>
-</div>
+</header>
 <div class="w-full flex justify-center">
   <div class="grid grid-cols-2 gap-2 mx-4 md:w-4/5 w-full">
     <ng-container *ngIf="items$ | async as items; else loading">
