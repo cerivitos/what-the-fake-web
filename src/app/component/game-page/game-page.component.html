@@ -4,17 +4,18 @@
   <span>Bonus: {{ bonus$ | async }}</span>
 </header>
 <div class="w-full flex justify-center">
-  <div class="grid grid-cols-2 gap-2 mx-4 md:w-4/5 w-full">
-    <ng-container *ngIf="items$ | async as items; else loading">
-      <div *ngFor="let item of items">
-        <app-option-card
-          class="capitalize"
-          title="{{ item.title }}"
-          imageUrl="{{ item.imageUrl }}"
-          postId="{{ item.postId }}"
-        ></app-option-card>
-      </div>
-    </ng-container>
+  <div
+    class="grid grid-cols-2 gap-2 mx-4 md:w-4/5 w-full relative"
+    *ngIf="items$ | async as items; else loading"
+    [@cardTransition]="items"
+  >
+    <app-option-card
+      *ngFor="let item of items"
+      class="capitalize"
+      title="{{ item.title }}"
+      imageUrl="{{ item.imageUrl }}"
+      postId="{{ item.postId }}"
+    ></app-option-card>
   </div>
 </div>
 
