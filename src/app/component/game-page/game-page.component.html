@@ -6,7 +6,7 @@
   </header>
   <div class="flex md:flex-grow-0 flex-grow justify-center">
     <div
-      class="grid grid-cols-2 gap-2 mx-2 md:w-4/5 w-full h-full relative"
+      class="grid grid-cols-2 gap-2 mx-2 w-full h-full relative"
       *ngIf="items$ | async as items; else loading"
       [@cardTransition]="items"
     >
