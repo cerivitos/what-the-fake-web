@@ -23,7 +23,7 @@ import {
       transition('* => *', [
         query(':enter', [
           style({
-            opacity: 0.4,
+            opacity: 0,
             transform: 'scale(0.95)',
           }),
           stagger('80ms', [
