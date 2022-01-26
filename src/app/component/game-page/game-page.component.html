@@ -1,21 +1,23 @@
-<header class="flex flex-col gap-4 my-4 items-center">
-  <span>Round: {{ round$ | async }}</span>
-  <span>Score: {{ score$ | async }}</span>
-  <span>Bonus: {{ bonus$ | async }}</span>
-</header>
-<div class="w-full flex justify-center">
-  <div
-    class="grid grid-cols-2 gap-2 mx-4 md:w-4/5 w-full relative"
-    *ngIf="items$ | async as items; else loading"
-    [@cardTransition]="items"
-  >
-    <app-option-card
-      *ngFor="let item of items"
-      class="capitalize"
-      title="{{ item.title }}"
-      imageUrl="{{ item.imageUrl }}"
-      postId="{{ item.postId }}"
-    ></app-option-card>
+<div class="flex flex-col items-center h-full pb-4">
+  <header class="flex gap-4 my-4 items-center">
+    <span>Round: {{ round$ | async }}</span>
+    <span>Score: {{ score$ | async }}</span>
+    <span>Bonus: {{ bonus$ | async }}</span>
+  </header>
+  <div class="flex md:flex-grow-0 flex-grow justify-center">
+    <div
+      class="grid grid-cols-2 gap-2 mx-2 md:w-4/5 w-full h-full relative"
+      *ngIf="items$ | async as items; else loading"
+      [@cardTransition]="items"
+    >
+      <app-option-card
+        *ngFor="let item of items"
+        class="capitalize md:h-56 h-full"
+        title="{{ item.title }}"
+        imageUrl="{{ item.imageUrl }}"
+        postId="{{ item.postId }}"
+      ></app-option-card>
+    </div>
   </div>
 </div>
 
