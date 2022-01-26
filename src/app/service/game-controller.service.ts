@@ -12,6 +12,7 @@ export class GameControllerService {
     this.getPostsService.getAllPosts();
     this.getPostsService.items$.subscribe((posts) => {
       this.items = posts;
+      this._preloadImages();
       this._itemsForRound$.next(this._getItemsForRound());
 
       this.bonusCountdown = setInterval(() => {
@@ -74,5 +75,12 @@ export class GameControllerService {
           index == startingIndex + 3
       ) || []
     );
+  }
+
+  private _preloadImages(): void {
+    this.items?.forEach((item) => {
+      const image = new Image();
+      image.src = item.imageUrl;
+    });
   }
 }
