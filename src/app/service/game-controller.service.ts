@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { __core_private_testing_placeholder__ } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { cardSelectDelay } from '../animation/card-animations';
 import { RedditItem } from '../model/RedditItem';
@@ -9,7 +10,10 @@ import { GetPostsService } from './get-posts.service';
   providedIn: 'root',
 })
 export class GameControllerService {
-  constructor(private getPostsService: GetPostsService) {
+  constructor(
+    private getPostsService: GetPostsService,
+    private router: Router
+  ) {
     this.getPostsService.getAllPosts();
     this.getPostsService.items$.subscribe((posts) => {
       this.items = posts;
@@ -76,6 +80,8 @@ export class GameControllerService {
       this._itemsForRound$.next([]);
       clearInterval(this.bonusCountdown);
       this._score$.next(this._score$.getValue() + this._bonus$.getValue());
+
+      this.router.navigate(['/game/result']);
     }
   }
 
