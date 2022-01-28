@@ -16,6 +16,6 @@ export class OptionCardComponent implements OnInit {
   ngOnInit(): void {}
 
   submitAnswer(): void {
-    this.gameControllerService.checkAnswer(this.postId);
+    this.gameControllerService.submitAnswer(this.postId);
   }
 }

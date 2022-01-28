@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { __core_private_testing_placeholder__ } from '@angular/core/testing';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { cardSelectDelay } from '../animation/card-animations';
 import { RedditItem } from '../model/RedditItem';
 import { GetPostsService } from './get-posts.service';
 
@@ -39,6 +40,8 @@ export class GameControllerService {
   public readonly itemsForRound$: Observable<RedditItem[]> =
     this._itemsForRound$.asObservable();
 
+  submittedAnswer: string | undefined;
+
   items: RedditItem[] | undefined;
 
   setTotalRounds(rounds: number) {
@@ -46,12 +49,25 @@ export class GameControllerService {
     this._bonus$.next((this.totalRounds / 10) * 3000);
   }
 
-  checkAnswer(postId: string) {
-    const selectedItem = this.items?.filter((item) => item.postId === postId);
+  submitAnswer(postId: string) {
+    this.submittedAnswer = postId;
+
+    //Wait for selection animation to finish before checking answer and advancing to next round
+    setTimeout(() => {
+      this.checkAnswer();
+    }, cardSelectDelay);
+  }
+
+  checkAnswer() {
+    const selectedItem = this.items?.filter(
+      (item) => item.postId === this.submittedAnswer
+    );
 
     if (selectedItem?.[0].isReal) {
       this._score$.next(this._score$.getValue() + 1);
     }
+
+    this.submittedAnswer = undefined;
 
     if (this._round$.getValue() < this.totalRounds) {
       this._round$.next(this._round$.getValue() + 1);

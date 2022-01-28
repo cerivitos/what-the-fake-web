@@ -1,42 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { GetPostsService } from '../../service/get-posts.service';
 import { RedditItem } from '../../model/RedditItem';
 import { GameControllerService } from 'src/app/service/game-controller.service';
-import {
-  animate,
-  group,
-  query,
-  sequence,
-  stagger,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
+import { cardAnimations } from 'src/app/animation/card-animations';
 
 @Component({
   selector: 'app-game-page',
   templateUrl: './game-page.component.html',
   styleUrls: ['./game-page.component.css'],
-  animations: [
-    trigger('cardTransition', [
-      transition('* => *', [
-        query(':enter', [
-          style({
-            opacity: 0,
-            transform: 'scale(0.95)',
-          }),
-          stagger('80ms', [
-            animate('260ms ease-in'),
-            style({
-              opacity: 1,
-              transform: 'scale(1)',
-            }),
-          ]),
-        ]),
-      ]),
-    ]),
-  ],
+  animations: cardAnimations,
 })
 export class GamePageComponent implements OnInit {
   constructor(private gameControllerService: GameControllerService) {}
@@ -51,5 +23,16 @@ export class GamePageComponent implements OnInit {
     this.bonus$ = this.gameControllerService.bonus$;
     this.score$ = this.gameControllerService.score$;
     this.round$ = this.gameControllerService.round$;
+  }
+
+  checkIfCardSelected(postId: string): string {
+    if (
+      this.gameControllerService.submittedAnswer !== undefined &&
+      this.gameControllerService.submittedAnswer !== postId
+    ) {
+      return 'notSelected';
+    } else {
+      return 'default';
+    }
   }
 }

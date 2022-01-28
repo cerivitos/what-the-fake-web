@@ -8,7 +8,7 @@
     <div
       class="grid grid-cols-2 gap-2 mx-2 w-full h-full relative"
       *ngIf="items$ | async as items; else loading"
-      [@cardTransition]="items"
+      [@nextRoundTransition]="items"
     >
       <app-option-card
         *ngFor="let item of items"
@@ -16,6 +16,7 @@
         title="{{ item.title }}"
         imageUrl="{{ item.imageUrl }}"
         postId="{{ item.postId }}"
+        [@cardSelectTransition]="checkIfCardSelected(item.postId)"
       ></app-option-card>
     </div>
   </div>
