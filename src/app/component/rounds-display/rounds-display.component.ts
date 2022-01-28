@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { cardSelectDelay } from 'src/app/animation/card-animations';
 import { GameControllerService } from 'src/app/service/game-controller.service';
 
 @Component({
@@ -13,9 +14,12 @@ export class RoundsDisplayComponent implements OnInit {
   currentRound$!: Observable<number>;
   currentRound: number = 1;
   totalRounds!: number;
+  cardSelectDelay: number = 500;
 
   ngOnInit(): void {
     this.currentRound$ = this.gameControllerService.round$;
     this.totalRounds = this.gameControllerService.totalRounds;
+
+    this.cardSelectDelay = Math.round(cardSelectDelay * 0.75);
   }
 }

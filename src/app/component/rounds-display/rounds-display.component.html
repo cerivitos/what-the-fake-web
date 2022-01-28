@@ -1,12 +1,12 @@
 <div class="w-full flex justify-between items-center">
   <!-- Need to use $any to check <= in Angular template-->
   <div
-    class="rounded-full w-6 h-2 transition-all duration-500"
+    class="rounded-full w-6 h-2 transition-all"
     *ngFor="let _ of [].constructor(totalRounds + 1); let i = index"
     [class]="
       $any(currentRound$ | async) <= i
         ? 'bg-emerald-600/25'
-        : 'bg-emerald-600 w-6 h-3'
+        : 'bg-emerald-600 w-6 h-3 duration-[' + cardSelectDelay + 'ms]'
     "
   ></div>
 </div>
