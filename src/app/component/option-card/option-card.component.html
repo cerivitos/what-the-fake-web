@@ -1,15 +1,15 @@
 <div
-  class="relative rounded-md overflow-hidden bg-slate-700 h-full hover:ring-4 active:ring-8 hover:ring-emerald-600/95 cursor-pointer transition-all duration-300 ease-in-out"
+  class="group relative rounded-md overflow-hidden bg-slate-700 h-full hover:ring-4 active:ring-8 hover:ring-emerald-600/95 cursor-pointer transition-all duration-300 ease-in-out"
   (click)="submitAnswer()"
 >
   <img
     *ngIf="imageUrl.length > 0"
     [src]="imageUrl"
     alt="Image for news article with title: {{ title }}"
-    class="h-full object-cover w-full"
+    class="h-full object-cover w-full group-hover:scale-110 transition-transform"
   />
   <div
-    class="absolute bottom-0 flex items-end w-full h-[calc(100%+3rem)] bg-gradient-to-t from-zinc-900 hover:from-emerald-900 bg-blend-screen"
+    class="absolute bottom-0 flex items-end w-full h-[calc(100%+3rem)] bg-gradient-to-t from-zinc-900 bg-blend-screen"
   >
     <p class="md:text-xl text-sm md:p-4 p-2 font-medium z-10">{{ title }}</p>
   </div>
