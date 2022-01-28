@@ -32,19 +32,23 @@ export const cardAnimations = [
   ]),
   trigger('nextRoundTransition', [
     transition('* => *', [
-      query(':enter', [
-        style({
-          opacity: 0,
-          transform: 'scale(0.95)',
-        }),
-        stagger('80ms', [
-          animate('260ms ease-in'),
+      query(
+        ':enter',
+        [
           style({
-            opacity: 1,
-            transform: 'scale(1)',
+            opacity: 0,
+            transform: 'scale(0.95)',
           }),
-        ]),
-      ]),
+          stagger('80ms', [
+            animate('260ms ease-in'),
+            style({
+              opacity: 1,
+              transform: 'scale(1)',
+            }),
+          ]),
+        ],
+        { optional: true }
+      ),
     ]),
   ]),
 ];

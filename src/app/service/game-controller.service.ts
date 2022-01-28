@@ -81,7 +81,7 @@ export class GameControllerService {
       clearInterval(this.bonusCountdown);
       this._score$.next(this._score$.getValue() + this._bonus$.getValue());
 
-      this.router.navigate(['/game/result']);
+      this.router.navigateByUrl('/game/result');
     }
   }
 
