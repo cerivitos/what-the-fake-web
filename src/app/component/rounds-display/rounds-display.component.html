@@ -1,4 +1,5 @@
 <div class="w-full flex justify-between items-center">
+  <!-- Need to use $any to check <= in Angular template-->
   <div
     class="rounded-full w-6 h-2 transition-all duration-500"
     *ngFor="let _ of [].constructor(totalRounds + 1); let i = index"
