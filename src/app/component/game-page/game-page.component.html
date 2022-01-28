@@ -1,8 +1,6 @@
 <div class="flex flex-col items-center h-full pb-4">
-  <header class="flex gap-4 my-4 items-center">
-    <span>Round: {{ round$ | async }}</span>
-    <span>Score: {{ score$ | async }}</span>
-    <span>Bonus: {{ bonus$ | async }}</span>
+  <header class="flex w-full justify-center align-middle">
+    <app-rounds-display class="w-full md:w-1/4 mx-4 my-8"></app-rounds-display>
   </header>
   <div class="flex md:flex-grow-0 flex-grow justify-center">
     <div
