@@ -13,19 +13,7 @@ export class GameControllerService {
   constructor(
     private getPostsService: GetPostsService,
     private router: Router
-  ) {
-    this.getPostsService.getAllPosts();
-    this.getPostsService.items$.subscribe((posts) => {
-      this.items = posts;
-      this._preloadImages();
-      this._itemsForRound$.next(this._getItemsForRound());
-
-      this.bonusCountdown = setInterval(() => {
-        this._bonus$.next(this._bonus$.getValue() - 10);
-        if (this._bonus$.getValue() === 0) clearInterval(this.bonusCountdown);
-      }, 1000);
-    });
-  }
+  ) {}
 
   totalRounds: number = 10;
 
@@ -47,6 +35,25 @@ export class GameControllerService {
   submittedAnswer: string | undefined;
 
   items: RedditItem[] | undefined;
+
+  startGame() {
+    this._score$.next(0);
+    this._round$.next(1);
+    this._bonus$.next(3000);
+    this._itemsForRound$.next([]);
+
+    this.getPostsService.getAllPosts();
+    this.getPostsService.items$.subscribe((posts) => {
+      this.items = posts;
+      this._preloadImages();
+      this._itemsForRound$.next(this._getItemsForRound());
+
+      this.bonusCountdown = setInterval(() => {
+        this._bonus$.next(this._bonus$.getValue() - 10);
+        if (this._bonus$.getValue() === 0) clearInterval(this.bonusCountdown);
+      }, 1000);
+    });
+  }
 
   setTotalRounds(rounds: number) {
     this.totalRounds = rounds;

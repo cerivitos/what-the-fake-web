@@ -19,6 +19,8 @@ export class GamePageComponent implements OnInit {
   bonus$: Observable<number> | undefined;
 
   ngOnInit(): void {
+    this.gameControllerService.startGame();
+
     this.items$ = this.gameControllerService.itemsForRound$;
     this.bonus$ = this.gameControllerService.bonus$;
     this.score$ = this.gameControllerService.score$;
