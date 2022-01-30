@@ -9,7 +9,11 @@ body {
 }
 
 h1 {
-  @apply text-4xl font-bold leading-loose;
+  @apply text-6xl font-bold;
+}
+
+h2 {
+  @apply text-3xl font-bold;
 }
 
 a {
