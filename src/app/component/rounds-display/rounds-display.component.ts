@@ -20,6 +20,6 @@ export class RoundsDisplayComponent implements OnInit {
     this.currentRound$ = this.gameControllerService.round$;
     this.totalRounds = this.gameControllerService.totalRounds;
 
-    this.cardSelectDelay = Math.round(cardSelectDelay * 0.75);
+    this.cardSelectDelay = cardSelectDelay;
   }
 }

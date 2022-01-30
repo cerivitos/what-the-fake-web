@@ -59,7 +59,7 @@ export class GameControllerService {
     //Wait for selection animation to finish before checking answer and advancing to next round
     setTimeout(() => {
       this.checkAnswer();
-    }, cardSelectDelay);
+    }, cardSelectDelay + 180);
   }
 
   checkAnswer() {

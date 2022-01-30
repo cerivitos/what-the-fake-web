@@ -8,7 +8,8 @@ import {
   stagger,
 } from '@angular/animations';
 
-export const cardSelectDelay = 600;
+export const cardSelectDuration = 450;
+export const cardSelectDelay = cardSelectDuration + 250;
 
 export const cardAnimations = [
   trigger('cardSelectTransition', [
@@ -16,18 +17,17 @@ export const cardAnimations = [
       'default',
       style({
         opacity: 1,
-        transform: 'scale(1)',
       })
     ),
     state(
       'notSelected',
       style({
-        opacity: 0,
-        transform: 'scale(0.9)',
+        opacity: 0.4,
+        filter: 'saturate(20%)',
       })
     ),
     transition('default => notSelected', [
-      animate(`${cardSelectDelay}ms ease-out`),
+      animate(`${cardSelectDuration}ms ease-out`),
     ]),
   ]),
   trigger('nextRoundTransition', [
