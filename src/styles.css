@@ -20,6 +20,10 @@ a {
   @apply text-blue-300 cursor-pointer hover:text-blue-400 transition-colors;
 }
 
-button.basic {
+button.primary {
   @apply px-4 py-2 rounded-md bg-gradient-to-b from-emerald-500 to-emerald-700 text-white font-medium hover:ring-2 hover:ring-emerald-600/70 transition-all duration-300 active:bg-emerald-600;
+}
+
+button.secondary {
+  @apply px-4 py-2 rounded-md bg-slate-500 text-white font-medium hover:ring-2 hover:ring-slate-600/70 transition-all duration-300 active:bg-slate-600;
 }

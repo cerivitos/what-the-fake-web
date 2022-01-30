@@ -1,7 +1,11 @@
-<div class="w-full flex items-center justify-center">
+<div class="w-full flex flex-col items-center justify-center">
   <h1
-    class="text-transparent bg-gradient-to-r from-purple-500 via-rose-500 to-pink-500 bg-clip-text"
+    class="text-transparent bg-gradient-to-r from-purple-500 via-rose-500 to-pink-500 bg-clip-text mb-16"
   >
     {{ score$ | async }}
   </h1>
+  <div class="flex w-full md:w-1/2 gap-x-4 justify-around">
+    <button class="secondary w-full" routerLink="/">Home</button>
+    <button class="primary w-full" routerLink="/">Challenge</button>
+  </div>
 </div>
