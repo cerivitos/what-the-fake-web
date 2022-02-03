@@ -20,10 +20,7 @@ export class GameControllerService {
   private _score$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   public readonly score$: Observable<number> = this._score$.asObservable();
 
-  private _bonus$: BehaviorSubject<number> = new BehaviorSubject<number>(3000);
-  public readonly bonus$: Observable<number> = this._bonus$.asObservable();
-
-  bonusCountdown!: any;
+  startTime: number | undefined;
 
   private _round$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
   public readonly round$: Observable<number> = this._round$.asObservable();
@@ -37,9 +34,9 @@ export class GameControllerService {
   items: RedditItem[] | undefined;
 
   startGame() {
+    this.startTime = Date.now();
     this._score$.next(0);
     this._round$.next(1);
-    this._bonus$.next(3000);
     this._itemsForRound$.next([]);
 
     this.getPostsService.getAllPosts();
@@ -47,17 +44,11 @@ export class GameControllerService {
       this.items = posts;
       this._preloadImages();
       this._itemsForRound$.next(this._getItemsForRound());
-
-      this.bonusCountdown = setInterval(() => {
-        this._bonus$.next(this._bonus$.getValue() - 10);
-        if (this._bonus$.getValue() === 0) clearInterval(this.bonusCountdown);
-      }, 1000);
     });
   }
 
   setTotalRounds(rounds: number) {
     this.totalRounds = rounds;
-    this._bonus$.next((this.totalRounds / 10) * 3000);
   }
 
   submitAnswer(postId: string) {
@@ -85,9 +76,7 @@ export class GameControllerService {
       this._itemsForRound$.next(this._getItemsForRound());
     } else {
       this._itemsForRound$.next([]);
-      clearInterval(this.bonusCountdown);
-      this._score$.next(this._score$.getValue() + this._bonus$.getValue());
-
+      this._score$.next(this._score$.getValue());
       this.router.navigateByUrl('/game/result');
     }
   }
