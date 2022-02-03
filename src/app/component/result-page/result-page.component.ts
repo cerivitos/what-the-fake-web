@@ -55,7 +55,6 @@ export class ResultPageComponent implements OnInit {
 
   answerSubscription: Subscription | undefined;
   answerHistory: ('✓' | '×')[] | undefined;
-  correct: number | undefined;
   time: number | undefined;
 
   selectedRound: number | undefined;
@@ -67,7 +66,6 @@ export class ResultPageComponent implements OnInit {
       .pipe(
         tap((answers) => {
           this.answerHistory = answers.map((answer) => (answer ? '✓' : '×'));
-          this.correct = answers.filter((answer) => answer).length;
         })
       )
       .subscribe();
