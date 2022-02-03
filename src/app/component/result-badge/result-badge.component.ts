@@ -27,7 +27,6 @@ export class ResultBadgeComponent implements OnInit {
   }
 
   updateStyleClass(selectedRound: number): void {
-    console.log(`index: ${this.index} selected: ${selectedRound}`);
     if (this.index === selectedRound) {
       this.styleClass = this.styleClass + ' scale-[0.85]';
     } else {

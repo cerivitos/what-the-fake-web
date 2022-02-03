@@ -1,8 +1,5 @@
 <div class="p-4 w-full flex flex-col items-center justify-center">
-  <h2
-    @badgeAnim
-    class="flex flex-row w-full md:w-1/2 items-center justify-around my-8"
-  >
+  <h2 @badgeAnim class="flex w-full md:w-1/2 items-center justify-around my-8">
     <app-result-badge
       *ngFor="let history of answerHistory; let i = index"
       [result]="history"
