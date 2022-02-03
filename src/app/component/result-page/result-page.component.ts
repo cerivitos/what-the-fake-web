@@ -34,9 +34,9 @@ import { GameControllerService } from 'src/app/service/game-controller.service';
           ':enter',
           [
             style({ opacity: 0, transform: 'translateY(40px)' }),
-            stagger(180, [
+            stagger(80, [
               animate(
-                '360ms ease-in',
+                '180ms ease-in',
                 style({ opacity: 1, transform: 'translateY(0)' })
               ),
             ]),
@@ -55,9 +55,11 @@ export class ResultPageComponent implements OnInit {
   time: number | undefined;
 
   selectedRound: number | undefined;
-  itemsToShow: RedditItem[] = [];
+  itemsToShow: RedditItem[] | undefined;
 
   ngOnInit(): void {
+    this.itemsToShow = this.gameControllerService.items;
+
     this.answerSubscription = this.gameControllerService.answerHistory$
       .pipe(
         tap((answers) => {
@@ -66,8 +68,6 @@ export class ResultPageComponent implements OnInit {
       )
       .subscribe();
     this.time = Date.now() - this.gameControllerService.startTime!;
-
-    this.itemsToShow = this.gameControllerService.items!;
   }
 
   ngOnDestroy(): void {
@@ -84,10 +84,10 @@ export class ResultPageComponent implements OnInit {
   setRoundToShow(round: number) {
     if (this.selectedRound === round) {
       this.selectedRound = undefined;
-      this.itemsToShow = this.gameControllerService.items!;
+      this.itemsToShow = this.gameControllerService.items;
     } else {
       this.selectedRound = round;
-      this.itemsToShow = this.gameControllerService.items!.slice(
+      this.itemsToShow = this.gameControllerService.items?.slice(
         round * 4,
         round * 4 + 4
       );

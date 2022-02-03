@@ -18,7 +18,7 @@
     <button class="primary w-full" routerLink="/">Challenge</button>
   </div>
 
-  <div class="w-full md:w-1/2" [@listAnim]="itemsToShow">
+  <div [@listAnim]="itemsToShow" class="w-full md:w-1/2">
     <app-result-card
       *ngFor="let item of itemsToShow"
       articleUrl="{{ item.articleUrl }}"
