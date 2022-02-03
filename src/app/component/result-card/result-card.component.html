@@ -4,11 +4,17 @@
   target="_blank"
   rel="noreferrer"
 >
-  <img
-    class="rounded-md object-cover aspect-square w-1/6"
-    alt="Image for news article with title: {{ title }}"
-    [src]="imageUrl"
-  />
+  <div
+    class="bg-clip-content rounded-md aspect-square w-1/6 bg-gradient-to-t from-slate-600 to-slate-500"
+  >
+    <img
+      *ngIf="imageUrl"
+      class="object-cover w-full h-full"
+      alt="Image for news article with title: {{ title }}"
+      [src]="imageUrl"
+    />
+  </div>
+
   <div class="flex flex-col w-full gap-y-2">
     <span
       class="rounded-full bg-transparent border-2 px-2 text-xs uppercase self-start"

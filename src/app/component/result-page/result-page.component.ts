@@ -29,7 +29,7 @@ import { GameControllerService } from 'src/app/service/game-controller.service';
     ]),
 
     trigger('listAnim', [
-      transition('* => *', [
+      transition('* <=> *', [
         query(
           ':enter',
           [
@@ -37,12 +37,15 @@ import { GameControllerService } from 'src/app/service/game-controller.service';
             stagger(80, [
               animate(
                 '140ms ease-in',
-                style({ opacity: 1, transform: 'none' })
+                style({ opacity: 1, transform: 'translateY(0)' })
               ),
             ]),
           ],
           { optional: true }
         ),
+        query(':leave', [animate('140ms', style({ opacity: 0 }))], {
+          optional: true,
+        }),
       ]),
     ]),
   ],
@@ -51,12 +54,13 @@ export class ResultPageComponent implements OnInit {
   constructor(private gameControllerService: GameControllerService) {}
 
   answerSubscription: Subscription | undefined;
-  answerHistory: string[] | undefined;
+  answerHistory: ('✓' | '×')[] | undefined;
   correct: number | undefined;
   time: number | undefined;
 
-  items: RedditItem[] | undefined;
-  itemsToShow: RedditItem[] | undefined;
+  selectedRound: number | undefined;
+  items: RedditItem[] = [];
+  itemsToShow: RedditItem[] = [];
 
   ngOnInit(): void {
     this.answerSubscription = this.gameControllerService.answerHistory$
@@ -69,7 +73,7 @@ export class ResultPageComponent implements OnInit {
       .subscribe();
     this.time = Date.now() - this.gameControllerService.startTime!;
 
-    this.items = this.gameControllerService.items;
+    this.items = this.gameControllerService.items!;
     this.itemsToShow = this.items;
   }
 
@@ -85,7 +89,12 @@ export class ResultPageComponent implements OnInit {
   }
 
   setRoundToShow(round: number) {
-    const startRound = Math.round(round / 4);
-    this.itemsToShow = this.items?.slice(startRound, startRound + 4);
+    if (this.selectedRound === round) {
+      this.selectedRound = undefined;
+      this.itemsToShow = this.items;
+    } else {
+      this.selectedRound = round;
+      this.itemsToShow = this.items?.slice(round * 4, round * 4 + 4);
+    }
   }
 }

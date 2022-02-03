@@ -1,19 +1,15 @@
 <div class="p-4 w-full flex flex-col items-center justify-center">
   <h2
-    [@badgeAnim]
+    @badgeAnim
     class="flex flex-row w-full md:w-1/2 items-center justify-around my-8"
   >
-    <span
-      (click)="setRoundToShow(i)"
+    <app-result-badge
       *ngFor="let history of answerHistory; let i = index"
-      class="cursor-pointer w-12 h-12 flex justify-center items-center rounded-full bg-gradient-to-tr font-bold"
-      [ngClass]="
-        history === '✓'
-          ? 'from-emerald-400 to-cyan-400 text-emerald-600'
-          : 'from-rose-400 to-orange-400 text-rose-600'
-      "
-      >{{ history }}</span
-    >
+      [result]="history"
+      [index]="i"
+      [selectedRound]="selectedRound"
+      (click)="setRoundToShow(i)"
+    ></app-result-badge>
   </h2>
   <h2 class="flex flex-row gap-x-2 mb-16">
     ⏱️
