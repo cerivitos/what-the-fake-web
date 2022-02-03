@@ -17,10 +17,13 @@ export class GameControllerService {
 
   totalRounds: number = 10;
 
-  private _score$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-  public readonly score$: Observable<number> = this._score$.asObservable();
-
   startTime: number | undefined;
+
+  private _answerHistory$: BehaviorSubject<boolean[]> = new BehaviorSubject<
+    boolean[]
+  >([]);
+  public readonly answerHistory$: Observable<boolean[]> =
+    this._answerHistory$.asObservable();
 
   private _round$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
   public readonly round$: Observable<number> = this._round$.asObservable();
@@ -35,7 +38,7 @@ export class GameControllerService {
 
   startGame() {
     this.startTime = Date.now();
-    this._score$.next(0);
+    this._answerHistory$.next([]);
     this._round$.next(1);
     this._itemsForRound$.next([]);
 
@@ -65,9 +68,10 @@ export class GameControllerService {
       (item) => item.postId === this.submittedAnswer
     );
 
-    if (selectedItem?.[0].isReal) {
-      this._score$.next(this._score$.getValue() + 1);
-    }
+    this._answerHistory$.next([
+      ...this._answerHistory$.getValue(),
+      selectedItem?.[0].isReal!,
+    ]);
 
     this.submittedAnswer = undefined;
 
@@ -76,7 +80,6 @@ export class GameControllerService {
       this._itemsForRound$.next(this._getItemsForRound());
     } else {
       this._itemsForRound$.next([]);
-      this._score$.next(this._score$.getValue());
       this.router.navigateByUrl('/game/result');
     }
   }

@@ -1,11 +1,38 @@
-<div class="w-full flex flex-col items-center justify-center">
-  <h1
-    class="text-transparent bg-gradient-to-r from-purple-500 via-rose-500 to-pink-500 bg-clip-text mb-16"
+<div class="p-4 w-full flex flex-col items-center justify-center">
+  <h2
+    [@badgeAnim]
+    class="flex flex-row w-full md:w-1/2 items-center justify-around my-8"
   >
-    {{ score$ | async }}
-  </h1>
-  <div class="flex w-full md:w-1/2 gap-x-4 justify-around">
+    <span
+      (click)="setRoundToShow(i)"
+      *ngFor="let history of answerHistory; let i = index"
+      class="cursor-pointer w-12 h-12 flex justify-center items-center rounded-full bg-gradient-to-tr font-bold"
+      [ngClass]="
+        history === '✓'
+          ? 'from-emerald-400 to-cyan-400 text-emerald-600'
+          : 'from-rose-400 to-orange-400 text-rose-600'
+      "
+      >{{ history }}</span
+    >
+  </h2>
+  <h2 class="flex flex-row gap-x-2 mb-16">
+    ⏱️
+    <span>{{ convertMs(time!) }}</span>
+  </h2>
+
+  <div class="flex w-full md:w-1/2 gap-x-4 justify-around mb-16">
     <button class="secondary w-full" routerLink="/">Home</button>
     <button class="primary w-full" routerLink="/">Challenge</button>
+  </div>
+
+  <div class="w-full md:w-1/2" [@listAnim]="itemsToShow">
+    <app-result-card
+      *ngFor="let item of itemsToShow"
+      articleUrl="{{ item.articleUrl }}"
+      imageUrl="{{ item.imageUrl }}"
+      title="{{ item.title }}"
+      [isReal]="item.isReal"
+    >
+    </app-result-card>
   </div>
 </div>

@@ -22,7 +22,6 @@ export class GamePageComponent implements OnInit {
     this.gameControllerService.startGame();
 
     this.items$ = this.gameControllerService.itemsForRound$;
-    this.score$ = this.gameControllerService.score$;
     this.round$ = this.gameControllerService.round$;
   }
 
