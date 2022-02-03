@@ -29,19 +29,12 @@ import { GameControllerService } from 'src/app/service/game-controller.service';
     ]),
 
     trigger('listAnim', [
-      transition(':enter', [
-        query(
-          ':enter',
-          [
-            style({ opacity: 0, transform: 'translateY(40px)' }),
-            stagger(80, [
-              animate(
-                '180ms ease-in',
-                style({ opacity: 1, transform: 'translateY(0)' })
-              ),
-            ]),
-          ],
-          { optional: true }
+      transition('* => *', [
+        style({ opacity: 0.3, transform: 'translateY(18px)' }),
+
+        animate(
+          '180ms ease-in',
+          style({ opacity: 1, transform: 'translateY(0)' })
         ),
       ]),
     ]),
