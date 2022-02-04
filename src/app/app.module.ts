@@ -8,6 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AppCheckModule } from '@angular/fire/app-check';
 
 @NgModule({
   declarations: [AppComponent, StartPageComponent],
@@ -18,6 +19,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    AppCheckModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
