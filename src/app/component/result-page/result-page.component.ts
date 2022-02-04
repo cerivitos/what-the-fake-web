@@ -1,5 +1,6 @@
 import {
   animate,
+  animateChild,
   query,
   stagger,
   style,
@@ -30,13 +31,9 @@ import { GameControllerService } from 'src/app/service/game-controller.service';
 
     trigger('listAnim', [
       transition('* => *', [
-        style({ opacity: 0.3, transform: 'translateY(18px)' }),
-
-        animate(
-          '180ms ease-in',
-          style({ opacity: 1, transform: 'translateY(0)' })
-        ),
+        query('@enterAnim', [stagger(40, [animateChild()])]),
       ]),
+      transition(':leave', [animate('40ms ease-out', style({ opacity: 0 }))]),
     ]),
   ],
 })
