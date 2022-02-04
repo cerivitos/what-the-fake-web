@@ -3,7 +3,10 @@
     ⏱️
     <span>{{ convertMs(time!) }}</span>
   </h2>
-  <h2 @badgeAnim class="flex w-full md:w-1/2 items-center justify-around mb-16">
+  <h2
+    @badgeAnim
+    class="flex w-full flex-wrap gap-2 md:w-1/2 items-center justify-center mb-16"
+  >
     <app-result-badge
       *ngFor="let history of answerHistory; let i = index"
       [result]="history"
