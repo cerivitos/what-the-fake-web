@@ -1,5 +1,9 @@
 <div class="p-4 w-full flex flex-col items-center justify-center">
-  <h2 @badgeAnim class="flex w-full md:w-1/2 items-center justify-around my-8">
+  <h2 class="flex flex-row gap-x-2 my-8">
+    ⏱️
+    <span>{{ convertMs(time!) }}</span>
+  </h2>
+  <h2 @badgeAnim class="flex w-full md:w-1/2 items-center justify-around mb-16">
     <app-result-badge
       *ngFor="let history of answerHistory; let i = index"
       [result]="history"
@@ -7,10 +11,6 @@
       [selectedRound]="selectedRound"
       (click)="setRoundToShow(i)"
     ></app-result-badge>
-  </h2>
-  <h2 class="flex flex-row gap-x-2 mb-16">
-    ⏱️
-    <span>{{ convertMs(time!) }}</span>
   </h2>
 
   <div class="flex w-full md:w-1/2 gap-x-4 justify-around mb-16">
