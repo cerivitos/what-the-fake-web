@@ -1,12 +1,3 @@
-import {
-  animate,
-  animateChild,
-  query,
-  stagger,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
@@ -18,6 +9,13 @@ import { RedditItem } from 'src/app/model/RedditItem';
 import { Score } from 'src/app/model/Score';
 import { GameControllerService } from 'src/app/service/game-controller.service';
 import { isMobile } from 'src/util/mobile';
+
+import {
+  initializeAppCheck,
+  ReCaptchaV3Provider,
+} from '@angular/fire/app-check';
+import { getApp } from '@angular/fire/app';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-result-page',
@@ -45,6 +43,12 @@ export class ResultPageComponent implements OnInit {
   @ViewChild('copyArea', { static: true }) copyArea: ElementRef | undefined;
 
   ngOnInit(): void {
+    //Initialize Firebase App Check
+    initializeAppCheck(getApp(), {
+      provider: new ReCaptchaV3Provider(environment.appCheck.key),
+      isTokenAutoRefreshEnabled: true,
+    });
+
     this.answerSubscription = this.gameControllerService.answerHistory$
       .pipe(
         tap((answers) => {
