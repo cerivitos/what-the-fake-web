@@ -7,7 +7,8 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -38,12 +39,30 @@ import { GameControllerService } from 'src/app/service/game-controller.service';
       ]),
       transition(':leave', [animate('40ms ease-out', style({ opacity: 0 }))]),
     ]),
+
+    trigger('challengeUrlAnim', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(14px)' }),
+        animate('140ms ease-in', style({ opacity: 1, transform: 'none' })),
+      ]),
+    ]),
+
+    trigger('copyAnim', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'scale(0)' }),
+        animate('140ms ease-in', style({ opacity: 1, transform: 'none' })),
+      ]),
+      transition(':leave', [
+        animate('80ms ease-in', style({ opacity: 0, transform: 'scale(0)' })),
+      ]),
+    ]),
   ],
 })
 export class ResultPageComponent implements OnInit {
   constructor(
     private gameControllerService: GameControllerService,
-    private firestore: AngularFirestore
+    private firestore: AngularFirestore,
+    private clipboard: Clipboard
   ) {}
 
   answerSubscription: Subscription | undefined;
@@ -52,6 +71,11 @@ export class ResultPageComponent implements OnInit {
 
   selectedRound: number = 0;
   itemsToShow: RedditItem[] | undefined;
+
+  challengeUrl: string | undefined;
+  copied: boolean = false;
+
+  @ViewChild('copyArea', { static: true }) copyArea: ElementRef | undefined;
 
   ngOnInit(): void {
     this.answerSubscription = this.gameControllerService.answerHistory$
@@ -92,6 +116,8 @@ export class ResultPageComponent implements OnInit {
   }
 
   writeToStore() {
+    if (this.challengeUrl) return;
+
     const score: Score = {
       history: this.answerHistory?.map((answer) =>
         answer === '✓' ? true : false
@@ -110,7 +136,22 @@ export class ResultPageComponent implements OnInit {
       .collection<Game>('games')
       .add(game)
       .then((docRef) => {
-        console.log(docRef.id);
+        this.challengeUrl = `https://what-the-fake-web.vercel.app/${docRef.id}`;
+        this.copyToClipboard();
       });
+  }
+
+  copyToClipboard() {
+    const textToCopy = `${this.answerHistory
+      ?.map((ans) => (ans === '✓' ? '✅' : '❌'))
+      .join('')}\n⏱️ ${this.convertMs(this.time!)}\n\n🔗 ${this.challengeUrl}`;
+
+    navigator.share({ text: textToCopy }).catch((err) => {
+      this.clipboard.copy(textToCopy);
+      this.copied = true;
+      setTimeout(() => {
+        this.copied = false;
+      }, 3000);
+    });
   }
 }

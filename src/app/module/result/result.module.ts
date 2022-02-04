@@ -6,8 +6,14 @@ import { ResultPageComponent } from '../../component/result-page/result-page.com
 import { ResultCardComponent } from '../../component/result-card/result-card.component';
 import { ResultBadgeComponent } from '../../component/result-badge/result-badge.component';
 
+import { ClipboardModule } from '@angular/cdk/clipboard';
+
 @NgModule({
-  declarations: [ResultPageComponent, ResultCardComponent, ResultBadgeComponent],
-  imports: [CommonModule, ResultRoutingModule],
+  declarations: [
+    ResultPageComponent,
+    ResultCardComponent,
+    ResultBadgeComponent,
+  ],
+  imports: [CommonModule, ResultRoutingModule, ClipboardModule],
 })
 export class ResultModule {}
