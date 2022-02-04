@@ -12,51 +12,18 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { resultAnimations } from 'src/app/animation/result-animations';
 import { Game } from 'src/app/model/Game';
 import { RedditItem } from 'src/app/model/RedditItem';
 import { Score } from 'src/app/model/Score';
 import { GameControllerService } from 'src/app/service/game-controller.service';
+import { isMobile } from 'src/util/mobile';
 
 @Component({
   selector: 'app-result-page',
   templateUrl: './result-page.component.html',
   styleUrls: ['./result-page.component.css'],
-  animations: [
-    trigger('badgeAnim', [
-      transition(':enter', [
-        query(':enter', [
-          style({ opacity: 0, transform: 'scale(1.8) rotate(75deg)' }),
-          stagger(180, [
-            animate('360ms ease-in', style({ opacity: 1, transform: 'none' })),
-          ]),
-        ]),
-      ]),
-    ]),
-
-    trigger('listAnim', [
-      transition('* => *', [
-        query('@enterAnim', [stagger(40, [animateChild()])]),
-      ]),
-      transition(':leave', [animate('40ms ease-out', style({ opacity: 0 }))]),
-    ]),
-
-    trigger('challengeUrlAnim', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(14px)' }),
-        animate('140ms ease-in', style({ opacity: 1, transform: 'none' })),
-      ]),
-    ]),
-
-    trigger('copyAnim', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'scale(0)' }),
-        animate('140ms ease-in', style({ opacity: 1, transform: 'none' })),
-      ]),
-      transition(':leave', [
-        animate('80ms ease-in', style({ opacity: 0, transform: 'scale(0)' })),
-      ]),
-    ]),
-  ],
+  animations: resultAnimations,
 })
 export class ResultPageComponent implements OnInit {
   constructor(
@@ -146,12 +113,14 @@ export class ResultPageComponent implements OnInit {
       ?.map((ans) => (ans === '✓' ? '✅' : '❌'))
       .join('')}\n⏱️ ${this.convertMs(this.time!)}\n\n🔗 ${this.challengeUrl}`;
 
-    navigator.share({ text: textToCopy }).catch((err) => {
+    if (isMobile()) {
+      navigator.share({ text: textToCopy });
+    } else {
       this.clipboard.copy(textToCopy);
       this.copied = true;
       setTimeout(() => {
         this.copied = false;
       }, 3000);
-    });
+    }
   }
 }
