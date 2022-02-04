@@ -18,6 +18,9 @@ export class ResultBadgeComponent implements OnInit {
     this.result === '✓'
       ? (this.styleClass = 'from-emerald-400 to-cyan-400 text-emerald-600')
       : (this.styleClass = 'from-rose-400 to-orange-400 text-rose-600');
+
+    //Check on init if this badge is for the first round
+    this.updateStyleClass(0);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

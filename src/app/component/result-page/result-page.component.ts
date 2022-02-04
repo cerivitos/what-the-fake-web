@@ -44,12 +44,10 @@ export class ResultPageComponent implements OnInit {
   answerHistory: ('✓' | '×')[] | undefined;
   time: number | undefined;
 
-  selectedRound: number | undefined;
+  selectedRound: number = 0;
   itemsToShow: RedditItem[] | undefined;
 
   ngOnInit(): void {
-    this.itemsToShow = this.gameControllerService.items;
-
     this.answerSubscription = this.gameControllerService.answerHistory$
       .pipe(
         tap((answers) => {
@@ -57,6 +55,9 @@ export class ResultPageComponent implements OnInit {
         })
       )
       .subscribe();
+
+    //Show articles from first round as default
+    this.itemsToShow = this.gameControllerService.items?.slice(0, 4);
     this.time = Date.now() - this.gameControllerService.startTime!;
   }
 
@@ -73,7 +74,7 @@ export class ResultPageComponent implements OnInit {
 
   setRoundToShow(round: number) {
     if (this.selectedRound === round) {
-      this.selectedRound = undefined;
+      this.selectedRound = -1;
       this.itemsToShow = this.gameControllerService.items;
     } else {
       this.selectedRound = round;
