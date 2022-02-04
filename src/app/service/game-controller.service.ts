@@ -50,6 +50,17 @@ export class GameControllerService {
     });
   }
 
+  startChallengeGame(items: RedditItem[]) {
+    this.startTime = Date.now();
+    this._answerHistory$.next([]);
+    this._round$.next(1);
+    this._itemsForRound$.next([]);
+    this.items = items;
+
+    this._preloadImages();
+    this._itemsForRound$.next(this._getItemsForRound());
+  }
+
   setTotalRounds(rounds: number) {
     this.totalRounds = rounds;
   }
