@@ -83,29 +83,31 @@ export class ResultPageComponent implements OnInit {
   }
 
   writeToStore() {
-    if (this.challengeUrl) return;
+    if (this.challengeUrl) {
+      this.copyToClipboard();
+    } else {
+      const score: Score = {
+        history: this.answerHistory?.map((answer) =>
+          answer === '✓' ? true : false
+        )!,
+        time: this.time!,
+        name: '',
+      };
 
-    const score: Score = {
-      history: this.answerHistory?.map((answer) =>
-        answer === '✓' ? true : false
-      )!,
-      time: this.time!,
-      name: '',
-    };
+      const game: Game = {
+        scores: [score],
+        articles: this.gameControllerService.items!,
+        topScore: score,
+      };
 
-    const game: Game = {
-      scores: [score],
-      articles: this.gameControllerService.items!,
-      topScore: score,
-    };
-
-    this.firestore
-      .collection<Game>('games')
-      .add(game)
-      .then((docRef) => {
-        this.challengeUrl = `https://what-the-fake-web.vercel.app/${docRef.id}`;
-        this.copyToClipboard();
-      });
+      this.firestore
+        .collection<Game>('games')
+        .add(game)
+        .then((docRef) => {
+          this.challengeUrl = `https://what-the-fake-web.vercel.app/${docRef.id}`;
+          this.copyToClipboard();
+        });
+    }
   }
 
   copyToClipboard() {
