@@ -8,9 +8,12 @@ import {
   trigger,
 } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { Game } from 'src/app/model/Game';
 import { RedditItem } from 'src/app/model/RedditItem';
+import { Score } from 'src/app/model/Score';
 import { GameControllerService } from 'src/app/service/game-controller.service';
 
 @Component({
@@ -38,7 +41,10 @@ import { GameControllerService } from 'src/app/service/game-controller.service';
   ],
 })
 export class ResultPageComponent implements OnInit {
-  constructor(private gameControllerService: GameControllerService) {}
+  constructor(
+    private gameControllerService: GameControllerService,
+    private firestore: AngularFirestore
+  ) {}
 
   answerSubscription: Subscription | undefined;
   answerHistory: ('✓' | '×')[] | undefined;
@@ -83,5 +89,28 @@ export class ResultPageComponent implements OnInit {
         round * 4 + 4
       );
     }
+  }
+
+  writeToStore() {
+    const score: Score = {
+      history: this.answerHistory?.map((answer) =>
+        answer === '✓' ? true : false
+      )!,
+      time: this.time!,
+      name: '',
+    };
+
+    const game: Game = {
+      scores: [score],
+      articles: this.gameControllerService.items!,
+      topScore: score,
+    };
+
+    this.firestore
+      .collection<Game>('games')
+      .add(game)
+      .then((docRef) => {
+        console.log(docRef.id);
+      });
   }
 }

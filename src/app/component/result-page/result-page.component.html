@@ -18,7 +18,7 @@
 
   <div class="flex w-full md:w-1/2 gap-x-4 justify-around mb-16">
     <button class="secondary w-full" routerLink="/">Home</button>
-    <button class="primary w-full" routerLink="/">Challenge</button>
+    <button class="primary w-full" (click)="writeToStore()">Challenge</button>
   </div>
 
   <div [@listAnim]="itemsToShow" class="w-full md:w-1/2">
