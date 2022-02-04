@@ -16,6 +16,7 @@ export const environment = {
   appCheck: {
     key: '6Ld0XFkeAAAAAC9tyyuh17qsZhTDwYnLhAEpoRGO',
   },
+  version: '1.0',
 };
 
 /*

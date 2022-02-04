@@ -12,9 +12,6 @@ export class StartPageComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    if (environment.production) {
-      //@ts-ignore
-      this.version = process.env.ANGULAR_ENV_VERCEL_GIT_COMMIT_SHA ?? '';
-    }
+    this.version = environment.version;
   }
 }
