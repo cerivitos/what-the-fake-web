@@ -14,7 +14,7 @@ export const environment = {
     measurementId: 'G-VF9W2X6GLM',
   },
   appCheck: {
-    key: '99234181-85E1-4D5E-90A5-EC567E0381E5',
+    key: '6Ld0XFkeAAAAAC9tyyuh17qsZhTDwYnLhAEpoRGO',
   },
 };
 
