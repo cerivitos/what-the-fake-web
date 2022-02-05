@@ -1,8 +1,15 @@
 import { Injectable } from '@angular/core';
 import { __core_private_testing_placeholder__ } from '@angular/core/testing';
+import {
+  AngularFirestore,
+  DocumentSnapshot,
+  DocumentSnapshotExists,
+} from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { cardSelectDelay } from '../animation/card-animations';
+import { Game } from '../model/Game';
 import { RedditItem } from '../model/RedditItem';
 import { GetPostsService } from './get-posts.service';
 
@@ -12,7 +19,8 @@ import { GetPostsService } from './get-posts.service';
 export class GameControllerService {
   constructor(
     private getPostsService: GetPostsService,
-    private router: Router
+    private router: Router,
+    private firestore: AngularFirestore
   ) {}
 
   totalRounds: number = 10;
@@ -50,15 +58,24 @@ export class GameControllerService {
     });
   }
 
-  startChallengeGame(items: RedditItem[]) {
+  startChallengeGame(gameId: string) {
     this.startTime = Date.now();
     this._answerHistory$.next([]);
     this._round$.next(1);
     this._itemsForRound$.next([]);
-    this.items = items;
 
-    this._preloadImages();
-    this._itemsForRound$.next(this._getItemsForRound());
+    const storeSubscription = this._getChallengeItems(gameId)
+      .pipe(
+        tap((doc) => {
+          this.items = doc.data()?.articles!;
+
+          this._preloadImages();
+          this._itemsForRound$.next(this._getItemsForRound());
+
+          storeSubscription.unsubscribe();
+        })
+      )
+      .subscribe();
   }
 
   setTotalRounds(rounds: number) {
@@ -114,5 +131,11 @@ export class GameControllerService {
       const image = new Image();
       image.src = item.imageUrl;
     });
+  }
+
+  private _getChallengeItems(
+    gameId: string
+  ): Observable<firebase.default.firestore.DocumentSnapshot<Game>> {
+    return this.firestore.collection<Game>('games').doc(gameId).get();
   }
 }

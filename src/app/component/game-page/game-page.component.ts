@@ -4,9 +4,6 @@ import { RedditItem } from '../../model/RedditItem';
 import { GameControllerService } from 'src/app/service/game-controller.service';
 import { cardAnimations } from 'src/app/animation/card-animations';
 import { Router } from '@angular/router';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Game } from 'src/app/model/Game';
-import { tap } from 'rxjs/operators';
 
 import {
   initializeAppCheck,
@@ -24,8 +21,7 @@ import { environment } from 'src/environments/environment';
 export class GamePageComponent implements OnInit {
   constructor(
     private gameControllerService: GameControllerService,
-    private router: Router,
-    private firestore: AngularFirestore
+    private router: Router
   ) {}
 
   storeSubscription: Subscription | undefined;
@@ -49,20 +45,7 @@ export class GamePageComponent implements OnInit {
     if (!this.router.url.includes('game')) {
       const gameId = this.router.url.slice(1);
 
-      this.storeSubscription = this.firestore
-        .collection<Game>('games')
-        .doc(gameId)
-        .get()
-        .pipe(
-          tap((doc) => {
-            const articles = doc.data()?.articles!;
-
-            this.gameControllerService.startChallengeGame(articles);
-
-            this.storeSubscription?.unsubscribe();
-          })
-        )
-        .subscribe();
+      this.gameControllerService.startChallengeGame(gameId);
     } else {
       this.gameControllerService.startGame();
     }
