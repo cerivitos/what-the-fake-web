@@ -1,6 +1,7 @@
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { resultAnimations } from 'src/app/animation/result-animations';
@@ -20,7 +21,8 @@ export class ResultPageComponent implements OnInit {
   constructor(
     private gameControllerService: GameControllerService,
     private firestore: AngularFirestore,
-    private clipboard: Clipboard
+    private clipboard: Clipboard,
+    private router: Router
   ) {}
 
   answerSubscription: Subscription | undefined;
@@ -36,6 +38,12 @@ export class ResultPageComponent implements OnInit {
   @ViewChild('copyArea', { static: true }) copyArea: ElementRef | undefined;
 
   ngOnInit(): void {
+    if (!this.router.url.includes('/game')) {
+      this.challengeUrl = `https://what-the-fake-web.vercel.app/${
+        this.router.url.split('/')[1]
+      }`;
+    }
+
     this.answerSubscription = this.gameControllerService.answerHistory$
       .pipe(
         tap((answers) => {

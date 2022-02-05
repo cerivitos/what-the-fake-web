@@ -91,7 +91,7 @@ export class GameControllerService {
       this._itemsForRound$.next(this._getItemsForRound());
     } else {
       this._itemsForRound$.next([]);
-      this.router.navigateByUrl('/game/result');
+      this.router.navigateByUrl(`${this.router.url.split('/')[1]}/result`);
     }
   }
 
