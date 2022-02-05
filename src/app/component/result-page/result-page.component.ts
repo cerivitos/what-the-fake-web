@@ -10,13 +10,6 @@ import { Score } from 'src/app/model/Score';
 import { GameControllerService } from 'src/app/service/game-controller.service';
 import { isMobile } from 'src/util/mobile';
 
-import {
-  initializeAppCheck,
-  ReCaptchaV3Provider,
-} from '@angular/fire/app-check';
-import { getApp } from '@angular/fire/app';
-import { environment } from 'src/environments/environment';
-
 @Component({
   selector: 'app-result-page',
   templateUrl: './result-page.component.html',
@@ -43,12 +36,6 @@ export class ResultPageComponent implements OnInit {
   @ViewChild('copyArea', { static: true }) copyArea: ElementRef | undefined;
 
   ngOnInit(): void {
-    //Initialize Firebase App Check
-    initializeAppCheck(getApp(), {
-      provider: new ReCaptchaV3Provider(environment.appCheck.key),
-      isTokenAutoRefreshEnabled: true,
-    });
-
     this.answerSubscription = this.gameControllerService.answerHistory$
       .pipe(
         tap((answers) => {

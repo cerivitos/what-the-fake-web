@@ -8,6 +8,13 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Game } from 'src/app/model/Game';
 import { tap } from 'rxjs/operators';
 
+import {
+  initializeAppCheck,
+  ReCaptchaV3Provider,
+} from '@angular/fire/app-check';
+import { getApp } from '@angular/fire/app';
+import { environment } from 'src/environments/environment';
+
 @Component({
   selector: 'app-game-page',
   templateUrl: './game-page.component.html',
@@ -29,6 +36,12 @@ export class GamePageComponent implements OnInit {
   bonus$: Observable<number> | undefined;
 
   ngOnInit(): void {
+    //Initialize Firebase App Check
+    initializeAppCheck(getApp(), {
+      provider: new ReCaptchaV3Provider(environment.appCheck.key),
+      isTokenAutoRefreshEnabled: true,
+    });
+
     this.items$ = this.gameControllerService.itemsForRound$;
     this.round$ = this.gameControllerService.round$;
 
