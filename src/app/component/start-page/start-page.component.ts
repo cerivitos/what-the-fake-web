@@ -1,5 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { environment } from 'src/environments/environment';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-start-page',
@@ -9,9 +10,18 @@ import { environment } from 'src/environments/environment';
 export class StartPageComponent implements OnInit {
   version: string = '';
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.version = environment.version;
+    const envSubscription = this.http
+      .get('/api/query-env')
+      .pipe(
+        tap((env: any) => {
+          this.version = env['VERCEL_GITHUB_COMMIT_SHA'];
+
+          envSubscription.unsubscribe();
+        })
+      )
+      .subscribe();
   }
 }
