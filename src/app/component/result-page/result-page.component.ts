@@ -1,6 +1,5 @@
 import { Clipboard } from '@angular/cdk/clipboard';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -9,6 +8,7 @@ import { Game } from 'src/app/model/Game';
 import { RedditItem } from 'src/app/model/RedditItem';
 import { Score } from 'src/app/model/Score';
 import { GameControllerService } from 'src/app/service/game-controller.service';
+import { ResultService } from 'src/app/service/result.service';
 import { isMobile } from 'src/util/mobile';
 
 @Component({
@@ -20,9 +20,9 @@ import { isMobile } from 'src/util/mobile';
 export class ResultPageComponent implements OnInit {
   constructor(
     private gameControllerService: GameControllerService,
-    private firestore: AngularFirestore,
     private clipboard: Clipboard,
-    private router: Router
+    private router: Router,
+    private resultService: ResultService
   ) {}
 
   answerSubscription: Subscription | undefined;
@@ -32,33 +32,41 @@ export class ResultPageComponent implements OnInit {
   selectedRound: number = 0;
   itemsToShow: RedditItem[] | undefined;
 
+  score: Score | undefined;
+  game: Game | undefined;
+
   challengeUrl: string | undefined;
   copied: boolean = false;
 
-  @ViewChild('copyArea', { static: true }) copyArea: ElementRef | undefined;
-
   ngOnInit(): void {
-    if (!this.router.url.includes('/game')) {
-      this.challengeUrl = `https://what-the-fake-web.vercel.app/${
-        this.router.url.split('/')[1]
-      }`;
-    }
-
     this.answerSubscription = this.gameControllerService.answerHistory$
       .pipe(
         tap((answers) => {
           this.answerHistory = answers.map((answer) => (answer ? '✓' : '×'));
+
+          //Show articles from first round as default
+          this.itemsToShow = this.gameControllerService.items?.slice(0, 4);
+          this.time = Date.now() - this.gameControllerService.startTime!;
+
+          this.score = this.resultService.createScoreObject(
+            this.answerHistory,
+            this.time
+          );
+
+          this.game = this.resultService.createGameObject(this.score);
+
+          this.answerSubscription?.unsubscribe();
         })
       )
       .subscribe();
 
-    //Show articles from first round as default
-    this.itemsToShow = this.gameControllerService.items?.slice(0, 4);
-    this.time = Date.now() - this.gameControllerService.startTime!;
-  }
+    if (!this.router.url.includes('/game')) {
+      this.challengeUrl = `https://what-the-fake-web.vercel.app/${
+        this.router.url.split('/')[1]
+      }`;
 
-  ngOnDestroy(): void {
-    this.answerSubscription?.unsubscribe();
+      this.resultService.updateScore(this.score!);
+    }
   }
 
   convertMs(ms: number): string {
@@ -85,27 +93,10 @@ export class ResultPageComponent implements OnInit {
     if (this.challengeUrl) {
       this.copyToClipboard();
     } else {
-      const score: Score = {
-        history: this.answerHistory?.map((answer) =>
-          answer === '✓' ? true : false
-        )!,
-        time: this.time!,
-        name: '',
-      };
-
-      const game: Game = {
-        scores: [score],
-        articles: this.gameControllerService.items!,
-        topScore: score,
-      };
-
-      this.firestore
-        .collection<Game>('games')
-        .add(game)
-        .then((docRef) => {
-          this.challengeUrl = `https://what-the-fake-web.vercel.app/${docRef.id}`;
-          this.copyToClipboard();
-        });
+      this.resultService.writeToStore(this.game!).then((docRef) => {
+        this.challengeUrl = `https://what-the-fake-web.vercel.app/${docRef.id}`;
+        this.copyToClipboard();
+      });
     }
   }
 
