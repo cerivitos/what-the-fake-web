@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+require('dotenv').config();
 
 export default (req: VercelRequest, res: VercelResponse) => {
   if (process.env.VERCEL_GITHUB_COMMIT_SHA) {
