@@ -14,11 +14,10 @@ export class StartPageComponent implements OnInit {
 
   ngOnInit(): void {
     const envSubscription = this.http
-      .get('/api/query-env')
+      .get<string>('/api/query-env')
       .pipe(
-        tap((env: any) => {
-          this.version = env['VERCEL_GITHUB_COMMIT_SHA'];
-
+        tap((version) => {
+          this.version = version;
           envSubscription.unsubscribe();
         })
       )
