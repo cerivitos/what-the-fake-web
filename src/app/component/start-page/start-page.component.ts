@@ -14,7 +14,7 @@ export class StartPageComponent implements OnInit {
 
   ngOnInit(): void {
     const envSubscription = this.http
-      .get<string>('/api/query-env')
+      .get('/api/query-env', { responseType: 'text' })
       .pipe(
         tap((version) => {
           this.version = version;

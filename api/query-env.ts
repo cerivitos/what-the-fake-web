@@ -1,5 +1,4 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { environment } from '../src/environments/environment';
 const dotenv = require('dotenv');
 
 export default (req: VercelRequest, res: VercelResponse) => {
