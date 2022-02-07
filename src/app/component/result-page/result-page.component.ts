@@ -94,7 +94,7 @@ export class ResultPageComponent implements OnInit {
       this.copyToClipboard();
     } else {
       this.resultService.writeToStore(this.game!).then((docRef) => {
-        this.challengeUrl = `https://what-the-fake-web.vercel.app/${docRef.id}`;
+        this.challengeUrl = `https://wtf.notmydayjob.fyi/${docRef.id}`;
         this.copyToClipboard();
       });
     }
