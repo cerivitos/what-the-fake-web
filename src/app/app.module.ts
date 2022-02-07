@@ -9,6 +9,7 @@ import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AppCheckModule } from '@angular/fire/app-check';
+import { HotToastModule } from '@ngneat/hot-toast';
 
 @NgModule({
   declarations: [AppComponent, StartPageComponent],
@@ -20,6 +21,9 @@ import { AppCheckModule } from '@angular/fire/app-check';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AppCheckModule,
+    HotToastModule.forRoot({
+      duration: 3000,
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent],

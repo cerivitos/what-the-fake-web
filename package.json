@@ -20,6 +20,8 @@
     "@angular/platform-browser": "~13.1.2",
     "@angular/platform-browser-dynamic": "~13.1.2",
     "@angular/router": "~13.1.2",
+    "@ngneat/hot-toast": "^4.1.0",
+    "@ngneat/overview": "^3.0.0",
     "@tailwindcss/line-clamp": "^0.3.1",
     "axios": "^0.24.0",
     "dotenv": "^16.0.0",

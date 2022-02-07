@@ -6,8 +6,9 @@ import {
   DocumentSnapshotExists,
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
+import { HotToastService } from '@ngneat/hot-toast';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { cardSelectDelay } from '../animation/card-animations';
 import { Game } from '../model/Game';
 import { RedditItem } from '../model/RedditItem';
@@ -20,7 +21,8 @@ export class GameControllerService {
   constructor(
     private getPostsService: GetPostsService,
     private router: Router,
-    private firestore: AngularFirestore
+    private firestore: AngularFirestore,
+    private toast: HotToastService
   ) {}
 
   totalRounds: number = 10;
@@ -73,6 +75,13 @@ export class GameControllerService {
           this._itemsForRound$.next(this._getItemsForRound());
 
           storeSubscription.unsubscribe();
+        }),
+        catchError((error) => {
+          this.router.navigateByUrl('/');
+          console.error(error);
+          this.toast.error('Error loading game :(');
+
+          return error;
         })
       )
       .subscribe();

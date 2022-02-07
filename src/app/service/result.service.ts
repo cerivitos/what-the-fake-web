@@ -35,8 +35,8 @@ export class ResultService {
     };
   }
 
-  updateScore(score: Score) {
-    this.firestore
+  async updateScore(score: Score): Promise<void> {
+    return await this.firestore
       .collection('games')
       .doc(this.router.url.split('/')[1])
       .update({

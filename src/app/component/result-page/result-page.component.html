@@ -23,14 +23,6 @@
     </button>
   </div>
 
-  <div
-    @copyAnim
-    *ngIf="copied"
-    class="fixed rounded-lg top-16 mx-auto p-4 flex justify-center items-center bg-emerald-200 text-emerald-700 font-bold"
-  >
-    Copied!
-  </div>
-
   <div [@listAnim]="itemsToShow" class="w-full md:w-1/2">
     <app-result-card
       *ngFor="let item of itemsToShow"

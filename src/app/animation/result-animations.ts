@@ -26,14 +26,4 @@ export const resultAnimations = [
     ]),
     transition(':leave', [animate('40ms ease-out', style({ opacity: 0 }))]),
   ]),
-
-  trigger('copyAnim', [
-    transition(':enter', [
-      style({ opacity: 0, transform: 'scale(0)' }),
-      animate('140ms ease-in', style({ opacity: 1, transform: 'none' })),
-    ]),
-    transition(':leave', [
-      animate('80ms ease-in', style({ opacity: 0, transform: 'scale(0)' })),
-    ]),
-  ]),
 ];

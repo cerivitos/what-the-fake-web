@@ -1,6 +1,7 @@
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { HotToastService } from '@ngneat/hot-toast';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { resultAnimations } from 'src/app/animation/result-animations';
@@ -22,7 +23,8 @@ export class ResultPageComponent implements OnInit {
     private gameControllerService: GameControllerService,
     private clipboard: Clipboard,
     private router: Router,
-    private resultService: ResultService
+    private resultService: ResultService,
+    private toast: HotToastService
   ) {}
 
   answerSubscription: Subscription | undefined;
@@ -36,7 +38,6 @@ export class ResultPageComponent implements OnInit {
   game: Game | undefined;
 
   challengeUrl: string | undefined;
-  copied: boolean = false;
 
   ngOnInit(): void {
     this.answerSubscription = this.gameControllerService.answerHistory$
@@ -61,11 +62,14 @@ export class ResultPageComponent implements OnInit {
       .subscribe();
 
     if (!this.router.url.includes('/game')) {
-      this.challengeUrl = `https://what-the-fake-web.vercel.app/${
+      this.challengeUrl = `https://wtf.notmydayjob.fyi/${
         this.router.url.split('/')[1]
       }`;
 
-      this.resultService.updateScore(this.score!);
+      this.resultService.updateScore(this.score!).catch((error) => {
+        this.toast.error('Something went wrong :(');
+        console.error(error);
+      });
     }
   }
 
@@ -93,10 +97,16 @@ export class ResultPageComponent implements OnInit {
     if (this.challengeUrl) {
       this.copyToClipboard();
     } else {
-      this.resultService.writeToStore(this.game!).then((docRef) => {
-        this.challengeUrl = `https://wtf.notmydayjob.fyi/${docRef.id}`;
-        this.copyToClipboard();
-      });
+      this.resultService
+        .writeToStore(this.game!)
+        .then((docRef) => {
+          this.challengeUrl = `https://wtf.notmydayjob.fyi/${docRef.id}`;
+          this.copyToClipboard();
+        })
+        .catch((error) => {
+          this.toast.error('Something went wrong :(');
+          console.error(error);
+        });
     }
   }
 
@@ -109,10 +119,7 @@ export class ResultPageComponent implements OnInit {
       navigator.share({ text: textToCopy });
     } else {
       this.clipboard.copy(textToCopy);
-      this.copied = true;
-      setTimeout(() => {
-        this.copied = false;
-      }, 3000);
+      this.toast.success('Copied!');
     }
   }
 }
