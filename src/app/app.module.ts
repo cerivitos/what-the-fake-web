@@ -10,9 +10,10 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AppCheckModule } from '@angular/fire/app-check';
 import { HotToastModule } from '@ngneat/hot-toast';
+import { TermsAndPrivacyComponent } from './component/terms-and-privacy/terms-and-privacy.component';
 
 @NgModule({
-  declarations: [AppComponent, StartPageComponent],
+  declarations: [AppComponent, StartPageComponent, TermsAndPrivacyComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

@@ -1,0 +1,15 @@
+h2 {
+  @apply my-6 text-emerald-400;
+}
+
+h3 {
+  @apply mt-4 mb-2 text-emerald-400 font-bold;
+}
+
+p {
+  @apply mb-2;
+}
+
+ul {
+  @apply list-disc list-inside mb-2;
+}
