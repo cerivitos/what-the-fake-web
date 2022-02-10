@@ -47,12 +47,12 @@
       >r/theonion</a
     >
   </p>
-  <div class="flex flex-col md:flex-row items-center text-xs">
+  <div class="flex flex-col md:flex-row items-center text-xs mb-6">
     <a
       href="https://buymeacoffee.com/cerivitos"
       target="_blank"
       rel="noreferrer"
-      class="mb-3 md:mb-0 px-3 py-2 rounded-lg bg-yellow-400 text-black flex gap-2 hover:text-black hover:bg-yellow-200"
+      class="mb-3 md:mb-0 w-[132px] py-2 rounded-lg bg-yellow-400 text-black flex justify-center gap-2 hover:text-black hover:bg-yellow-200"
       ><img src="/assets/bmc-logo-no-background.png" class="w-3" />Buy me a
       coffee</a
     >
@@ -69,10 +69,11 @@
       href="https://github.com/cerivitos/what-the-fake-web"
       target="_blank"
       rel="noreferrer"
+      class="mb-3 mr-0 md:mb-0 md:mr-3"
       >Github</a
     >
-    <span class="mb-3 mr-0 md:mb-0 md:mr-3"> {{ version }}</span>
 
     <a routerLink="/terms-and-privacy">Terms and Privacy</a>
   </div>
+  <span class="text-xs text-slate-400">{{ version }}</span>
 </footer>
