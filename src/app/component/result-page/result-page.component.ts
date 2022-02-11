@@ -77,7 +77,7 @@ export class ResultPageComponent implements OnInit {
     const min = Math.floor(ms / 60000);
     const sec = Math.floor((ms % 60000) / 1000);
 
-    return `${min}:${sec < 10 ? '00' : sec}`;
+    return `${min}:${sec < 10 ? '0' + sec : sec}`;
   }
 
   setRoundToShow(round: number) {
