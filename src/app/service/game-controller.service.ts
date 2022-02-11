@@ -25,7 +25,7 @@ export class GameControllerService {
     private toast: HotToastService
   ) {}
 
-  totalRounds: number = 10;
+  totalRounds: number = 5;
 
   startTime: number | undefined;
 
