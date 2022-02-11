@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { tap } from 'rxjs/operators';
+import { GameControllerService } from 'src/app/service/game-controller.service';
 
 @Component({
   selector: 'app-start-page',
@@ -9,8 +10,12 @@ import { tap } from 'rxjs/operators';
 })
 export class StartPageComponent implements OnInit {
   version: string = '';
+  rounds: number = 5;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private gameControllerService: GameControllerService
+  ) {}
 
   ngOnInit(): void {
     const envSubscription = this.http
@@ -22,5 +27,7 @@ export class StartPageComponent implements OnInit {
         })
       )
       .subscribe();
+
+    this.rounds = this.gameControllerService.totalRounds;
   }
 }
