@@ -18,7 +18,11 @@
 
   <div class="flex w-full md:w-1/2 gap-x-4 justify-around mb-8">
     <button class="secondary w-full" routerLink="/">Home</button>
-    <button class="primary w-full" (click)="writeToStore()">
+    <button
+      class="primary w-full"
+      [disabled]="!buttonActive"
+      (click)="writeToStore()"
+    >
       {{ challengeUrl ? "Share" : "Challenge" }}
     </button>
   </div>

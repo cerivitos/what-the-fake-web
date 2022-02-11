@@ -38,6 +38,7 @@ export class ResultPageComponent implements OnInit {
   game: Game | undefined;
 
   challengeUrl: string | undefined;
+  buttonActive: boolean = true;
 
   ngOnInit(): void {
     this.answerSubscription = this.gameControllerService.answerHistory$
@@ -94,18 +95,24 @@ export class ResultPageComponent implements OnInit {
   }
 
   writeToStore() {
+    console.log('click');
+    this.buttonActive = false;
+
     if (this.challengeUrl) {
       this.copyToClipboard();
+      this.buttonActive = true;
     } else {
       this.resultService
         .writeToStore(this.game!)
         .then((docRef) => {
           this.challengeUrl = `https://wtf.notmydayjob.fyi/${docRef.id}`;
           this.copyToClipboard();
+          this.buttonActive = true;
         })
         .catch((error) => {
           this.toast.error('Something went wrong :(');
           console.error(error);
+          this.buttonActive = true;
         });
     }
   }
